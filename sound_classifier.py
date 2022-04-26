@@ -65,7 +65,7 @@ def load_audio(audio_file_path):
 
 labels = ['angry', 'calm' ,'disgust', 'fear', 'happy', 'neutral', 'sad','suprise']
 
-MODEL = keras.models.load_model('./sound_model_conv.h5')
+# MODEL = keras.models.load_model('./model/Emotion_Voice_Detection_Model.h5')
 
 def sound_to_emotion(audio_path):
     '''
@@ -74,4 +74,55 @@ def sound_to_emotion(audio_path):
     audio = load_audio(audio_path)
     predictions = MODEL.predict(audio,)
     return dict(zip(labels,predictions[0]))
-    
+
+class LivePredictions:
+    """
+    Main class of the application.
+    """
+
+    def __init__(self):
+        """
+        Init method is used to initialize the main parameters.
+        """
+        self.path = './model/Emotion_Voice_Detection_Model.h5'
+        self.loaded_model = keras.models.load_model(self.path)
+
+    def make_predictions(self,file_path):
+        """
+        Method to process the files and create your features.
+        """
+        data, sampling_rate = librosa.load(file_path,res_type='kaiser_fast')
+        x = np.mean(librosa.feature.mfcc(y=data, sr=sampling_rate, n_mfcc=40).T, axis=0).reshape(1,40,1)
+        # x = np.expand_dims(mfccs, axis=2)
+        # x = np.expand_dims(x, axis=0)
+        predictions = self.loaded_model.predict(x)
+        print(predictions)
+        # print( "Prediction is", " ", self.convert_class_to_emotion(predictions))
+
+    @staticmethod
+    def convert_class_to_emotion(pred):
+        """
+        Method to convert the predictions (int) into human readable strings.
+        """
+        
+        label_conversion = {'0': 'neutral',
+                            '1': 'happy',
+                            '2': 'sad',
+                            '3': 'angry',
+                            '4': 'fearful',
+                            '5': 'disgust',
+                            '6': 'surprised'}
+
+        for key, value in label_conversion.items():
+            if int(key) == pred:
+                label = value
+        return label
+
+predictor = LivePredictions()
+predictor.make_predictions('./test/happy.wav')
+# data, sampling_rate = librosa.load('./test/happy.wav')
+# mfccs = np.mean(librosa.feature.mfcc(y=data, sr=sampling_rate, n_mfcc=40).T, axis=0).reshape(1,40,1)
+# # x = np.expand_dims(mfccs, axis=2)
+# print(mfccs)
+# x = np.expand_dims(x, axis=0)
+

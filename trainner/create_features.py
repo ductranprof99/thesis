@@ -65,8 +65,8 @@ class CreateFeatures:
         # Preparing features dump
         X_name, y_name = 'X.joblib', 'y.joblib'
 
-        joblib.dump(X, os.path.join(save_dir, X_name))
-        joblib.dump(y, os.path.join(save_dir, y_name))
+        # joblib.dump(X, os.path.join(save_dir, X_name))
+        # joblib.dump(y, os.path.join(save_dir, y_name))
 
         return "Completed"
 
