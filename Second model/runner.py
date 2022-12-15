@@ -126,7 +126,12 @@ class QuadPredictor():
 
         disassembly_data = get_features(sound_path)
         predict = self.model.predict(disassembly_data)
-        return self.encoder.inverse_transform(predict)
+        inversed = self.encoder.inverse_transform(predict)
+        percentage = [0,0,0,0,0,0,0]
+        timeStampNumber = len(predict.tolist())
+        for eachStamp in range(0,timeStampNumber):
+            percentage = [percentage[i] + float(v) for (i,v) in enumerate(predict.tolist()[eachStamp])]
+        return inversed, [round(i/timeStampNumber,2) for i in percentage]
 
 
 def predict_predictor(model_path, mode ,features_path):
@@ -140,4 +145,10 @@ def predict_predictor(model_path, mode ,features_path):
 
 model = predict_predictor('./model/', 'h5' ,'./features.csv')
 
-model.predict("./test/fear.wav")
+x,z = model.predict("./test/test.wav")
+u, c = np.unique(x, return_counts = True)
+y = u[c == c.max()]
+result = y.ravel().tolist()[0]
+percentageString = str(z[0]) + ''.join(", " + str(e) for e in z[1:])
+print(result)
+print(percentageString)
