@@ -65,7 +65,7 @@ def load_audio(audio_file_path):
 
 labels = ['angry', 'calm' ,'disgust', 'fear', 'happy', 'neutral', 'sad','suprise']
 
-# MODEL = keras.models.load_model('./model/Emotion_Voice_Detection_Model.h5')
+MODEL = keras.models.load_model('./FirstModel/model/old_model/sound_model_conv.h5')
 
 def sound_to_emotion(audio_path):
     '''
@@ -84,7 +84,7 @@ class LivePredictions:
         """
         Init method is used to initialize the main parameters.
         """
-        self.path = './model/Emotion_Voice_Detection_Model.h5'
+        self.path = './model/voice_net.h5'
         self.loaded_model = keras.models.load_model(self.path)
 
     def make_predictions(self,file_path):
@@ -118,8 +118,8 @@ class LivePredictions:
                 label = value
         return label
 
-predictor = LivePredictions()
-predictor.make_predictions('./test/happy.wav')
+# predictor = LivePredictions()
+# predictor.make_predictions('./test/happy.wav')
 # data, sampling_rate = librosa.load('./test/happy.wav')
 # mfccs = np.mean(librosa.feature.mfcc(y=data, sr=sampling_rate, n_mfcc=40).T, axis=0).reshape(1,40,1)
 # # x = np.expand_dims(mfccs, axis=2)

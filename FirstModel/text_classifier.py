@@ -88,8 +88,8 @@ from fast_bert.prediction import BertClassificationPredictor
 
 # ekman_label.csv renamed to labels.csv
 
-MODEL_PATH = './model/model_out'
-LABEL_PATH = './model/'
+MODEL_PATH = './model/text_model/model_out'
+LABEL_PATH = './model/text_model/'
 predictor = BertClassificationPredictor(
 				model_path=MODEL_PATH,
 				label_path=LABEL_PATH, # location for labels.csv file

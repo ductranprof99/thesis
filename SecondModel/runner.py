@@ -131,7 +131,7 @@ class QuadPredictor():
         timeStampNumber = len(predict.tolist())
         for eachStamp in range(0,timeStampNumber):
             percentage = [percentage[i] + float(v) for (i,v) in enumerate(predict.tolist()[eachStamp])]
-        return inversed, [round(i/timeStampNumber,2) for i in percentage]
+        return inversed, [round(i/timeStampNumber,2)*100 for i in percentage]
 
 
 def predict_predictor(model_path, mode ,features_path):
